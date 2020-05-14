@@ -48,7 +48,7 @@ describe('AuthenticateUser', () => {
     const email = 'leonardo@gmail.com'
     const password = '123456789'
 
-    expect(authenticateUserService.execute({
+    await expect(authenticateUserService.execute({
       email,
       password,
     })).rejects.toBeInstanceOf(AppError)
@@ -77,7 +77,7 @@ describe('AuthenticateUser', () => {
       password,
     })
 
-    expect(authenticateUserService.execute({
+    await expect(authenticateUserService.execute({
       email,
       password: otherPassword,
     })).rejects.toBeInstanceOf(AppError)
