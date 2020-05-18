@@ -34,8 +34,6 @@ class ResetPasswordService {
       throw new AppError('User token doesn`t exists')
     }
 
-    console.log(userToken)
-
     const tokenCreatedAt = userToken.createdAt
     const compareDate = addHours(tokenCreatedAt, 2)
 

@@ -7,20 +7,25 @@ import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider'
 
 import AppError from '@shared/errors/AppError'
 
+let createUserService: CreateUserService
+let authenticateUserService: AuthenticateUserService
+let fakeHashProvider: FakeHashProvider
+let fakeUserRepository: FakeUserRepository
+
 describe('AuthenticateUser', () => {
+  beforeEach(() => {
+    fakeUserRepository = new FakeUserRepository()
+    fakeHashProvider = new FakeHashProvider()
+    createUserService = new CreateUserService(
+      fakeUserRepository,
+      fakeHashProvider
+    )
+    authenticateUserService = new AuthenticateUserService(
+      fakeUserRepository,
+      fakeHashProvider,
+    )
+  })
   it('should be able to authenticated', async () => {
-    const fakeUserRepository = new FakeUserRepository()
-    const fakeHashProvider = new FakeHashProvider()
-    const createUserService = new CreateUserService(
-      fakeUserRepository,
-      fakeHashProvider,
-    )
-
-    const authenticateUserService = new AuthenticateUserService(
-      fakeUserRepository,
-      fakeHashProvider,
-    )
-
     const email = 'leonardo@gmail.com'
     const password = '123456789'
 
@@ -37,14 +42,6 @@ describe('AuthenticateUser', () => {
   })
 
   it('should not be able to authenticate with non existing user', async () => {
-    const fakeUserRepository = new FakeUserRepository()
-    const fakeHashProvider = new FakeHashProvider()
-
-    const authenticateUserService = new AuthenticateUserService(
-      fakeUserRepository,
-      fakeHashProvider,
-    )
-
     const email = 'leonardo@gmail.com'
     const password = '123456789'
 
@@ -55,18 +52,6 @@ describe('AuthenticateUser', () => {
   })
 
   it('should not be able to create a new session with wrong password', async () => {
-    const fakeUserRepository = new FakeUserRepository()
-    const fakeHashProvider = new FakeHashProvider()
-    const createUserService = new CreateUserService(
-      fakeUserRepository,
-      fakeHashProvider,
-    )
-
-    const authenticateUserService = new AuthenticateUserService(
-      fakeUserRepository,
-      fakeHashProvider,
-    )
-
     const email = 'leonardo@gmail.com'
     const password = '123456789'
     const otherPassword = '42rf43f4'
