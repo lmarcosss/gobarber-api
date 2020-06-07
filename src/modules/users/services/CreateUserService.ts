@@ -9,6 +9,8 @@ import IUsersRepository from '../repositories/IUsersRepository'
 import ICreateUserDTO from '../dtos/ICreateUserDTO'
 
 import IHashProvider from '../providers/HashProvider/models/IHashProvider'
+import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider'
+
 
 /**
  * [x] Recebimento de informações
@@ -24,6 +26,9 @@ class CreateUserService {
 
     @inject('HashProvider')
     private hashProvider: IHashProvider,
+
+    @inject('CacheProvider')
+    private cacheProvider: ICacheProvider,
   ) {}
 
   public async execute ({ name, email, password }: ICreateUserDTO): Promise<User> {
@@ -40,6 +45,8 @@ class CreateUserService {
       email,
       password: hashedPassword,
     })
+
+    await this.cacheProvider.invalidatePrefix('providers-list')
 
     return user
   }

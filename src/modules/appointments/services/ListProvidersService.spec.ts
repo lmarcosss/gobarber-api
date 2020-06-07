@@ -2,15 +2,19 @@ import 'reflect-metadata'
 
 import ListProvidersService from '../services/ListProvidersService'
 import FakeUserRepository from '@modules/users/repositories/fakes/FakeUsersRepository'
+import FakeCacheProvider from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider'
 
 let listProvidersService: ListProvidersService
 let fakeUserRepository: FakeUserRepository
+let fakeCacheProvider: FakeCacheProvider
 
 describe('UpdateProfile', () => {
   beforeEach(() => {
     fakeUserRepository = new FakeUserRepository()
+    fakeCacheProvider = new FakeCacheProvider()
     listProvidersService = new ListProvidersService(
       fakeUserRepository,
+      fakeCacheProvider,
     )
   })
 
